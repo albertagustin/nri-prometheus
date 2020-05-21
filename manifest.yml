@@ -1,0 +1,9 @@
+applications:
+  - name: nri-prometheus
+    memory: 1G
+    disk_quoat: 1G
+    instances: 1
+    env:
+      GOPACKAGENAME: nri-prometheus
+      GO_INSTALL_PACKAGE_SPEC: github.com/newrelic/nri-prometheus/cmd/nri-prometheus
+      LICENSE_KEY: ((newrelic_license_key))

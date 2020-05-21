@@ -15,4 +15,5 @@ snyk-monitor-result.json
 snyk-result.json
 snyk_report.css
 snyk_report.html
-
+vars.yml
+config.yml
