@@ -1,5 +1,29 @@
 # New Relic Prometheus OpenMetrics Integration
 
+## Modifications for PCF
+
+The original app and documentation is configured to be deployed to Docker or Kubernetes. This fork makes minor changes to get the integration to run in PCF using the golang buildpack. The following was done to achieve this:
+
+- Migrate dependency management from govendor to `go mod`
+- Add CF files: .cfignore, manifest.yml, vars.yml
+
+To get running in PCF:
+
+```bash
+# vendor dependencies
+go mod vendor
+
+# create vars.yml, manifest.yml, config.yml
+cat vars.yml
+
+newrelic_license_key: <LICENSE_KEY>
+
+# push the app to CF
+cf push -f manifest.yml --vars-file vars.yml nri-prometheus -u process
+```
+
+## Description
+
 [![Build Status](https://travis-ci.org/newrelic/nri-prometheus.svg?branch=master)](https://travis-ci.org/newrelic/nri-prometheus.svg?branch=master)
 [![CLA assistant](https://cla-assistant.io/readme/badge/newrelic/nri-prometheus)](https://cla-assistant.io/newrelic/nri-prometheus)
 
@@ -10,7 +34,7 @@ and send them to the New Relic Metrics platform.
 
 For documentation about how to use it please refer to [New Relic's documentation website](https://docs.newrelic.com/docs/new-relic-prometheus-openmetrics-integration-kubernetes).
 
-Find out more about Prometheus and New Relic in [this blog post](https://blog.newrelic.com/product-news/how-to-monitor-prometheus-metrics/). 
+Find out more about Prometheus and New Relic in [this blog post](https://blog.newrelic.com/product-news/how-to-monitor-prometheus-metrics/).
 
 ## Development
 
@@ -50,9 +74,9 @@ And push it later with `docker push`
 ### Executing the integration in a development cluster
 
 - You need to configure how to deploy the integration in the cluster. Copy
-deploy/local.yaml.example to deploy/local.yaml and edit the placeholders.
- - To get the Infrastructure License key, visit:
-   `https://newrelic.com/accounts/<YOUR_ACCOUNT_ID>`. It's located in the right sidebar.
+  deploy/local.yaml.example to deploy/local.yaml and edit the placeholders.
+- To get the Infrastructure License key, visit:
+  `https://newrelic.com/accounts/<YOUR_ACCOUNT_ID>`. It's located in the right sidebar.
 - After updating the yaml file, you need to compile the integration: `GOOS=linux make compile-only`.
 - Once you have it compiled, you need to deploy it in your Kubernetes cluster: `skaffold run`
 
@@ -62,9 +86,10 @@ It can be useful to run the Kubernetes Target Retriever locally against a remote
 The program located in `/cmd/k8s-target-retriever` is made for this.
 
 To run the program,run the following command in your terminal:
+
 ```shell script
 # ensure your kubectl is configured correcly & against the correct cluster
 kubectl config get-contexts
-# run the program 
+# run the program
 go run cmd/k8s-target-retriever/main.go
-``` 
+```

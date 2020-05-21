@@ -1,3 +1,5 @@
+# fill and rename to config.yml
+
 # The name of your cluster. It's important to match other New Relic products to relate the data.
 cluster_name: "my-cluster-name"
 
